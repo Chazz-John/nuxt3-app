@@ -8,6 +8,12 @@
     <LazyMountainsList v-if='show'></LazyMountainsList>
     <button v-if="!show" @click="show = true">显示列表</button>
     <br/>
+
+    <div v-for="todo in todos" :key="todo.id">
+      <input type="checkbox" v-model="todo.completed">
+      <strong>{{todo.title}}</strong>
+    </div>
+
     <!--普通路由-->
     <NuxtLink to="/detail">Detail Page</NuxtLink>
     <br/>
@@ -20,7 +26,14 @@
     <NuxtLink to="/user-admin/1">user page</NuxtLink>
   </div>
 </template>
-<script setup>
+<script setup lang="ts">
   import { ref } from 'vue'
   const show = ref(false)
+  // const {data:todos} = await useAsyncData('todos',()=>$fetch('/api/todo')) 
+  const {data:todos}:any = await useFetch('/api/todo',{
+    transform(input:{data:[]}){
+      return input.data
+    }
+  }) 
+
 </script>
